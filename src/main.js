@@ -2,10 +2,10 @@ import './style.css'
 
 import * as THREE from 'three';
 
-// 1. Create the scene
+// Create the scene
 const scene = new THREE.Scene();
 
-// 2. Set up the camera
+// Set up the camera
 const camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -16,19 +16,29 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(5, 5, 8);
 camera.lookAt(0, 0, 0);
 
-// 3. Set up the renderer
+// Set up the renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// 4. Create geometry and materials
+// Create geometry and materials
 const geometry = new THREE.BoxGeometry(2, 3, 2);
 const material = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
 const building = new THREE.Mesh(geometry, material);
 
-// 5. Add objects to the scene
-scene.add(building);
+//  Create the ground
+const groundGeometry = new THREE.PlaneGeometry(20, 20);
+const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x228B22, side: THREE.DoubleSide });
+const ground = new THREE.Mesh(groundGeometry, groundMaterial);
 
-// 6. Animation loop
+// Rotate the ground to be horizontal
+ground.rotation.x = Math.PI / 2;
+ground.position.y = -1.5; // Position the ground below the building
+
+//Add objects to the scene
+scene.add(building);
+scene.add(ground);
+
+//Animation loop
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
