@@ -60,9 +60,80 @@ function onMouseClick(event) {
 
 
 // Create geometry and materials
-const geometry = new THREE.BoxGeometry(2, 3, 2);
-const material = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
-const building = new THREE.Mesh(geometry, material);
+// const geometry = new THREE.BoxGeometry(2, 3, 2);
+// const material = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+// const building = new THREE.Mesh(geometry, material);
+
+// Historical Ward One building
+const historicalGeometry = new THREE.BoxGeometry(2, 3, 2);
+
+const historicalMaterial = new THREE.MeshStandardMaterial({
+    color: 0x8b4513
+});
+
+// Modern Columbia building
+const modernGeometry = new THREE.BoxGeometry(3, 5, 3);
+
+const modernMaterial = new THREE.MeshStandardMaterial({
+    color: 0x808080
+});
+
+// //  when we call the building variable, it will be the modern Columbia building
+const building = new THREE.Mesh(modernGeometry, modernMaterial); 
+building.position.y = 1;
+
+//  flag to track which building is currently displayed
+//  false = modern cola, true = historical ward one
+//  let allows for constant reassignment of the variable, but not redeclaration
+let isHistorical = false; 
+
+function transformBuilding() {
+
+    isHistorical = !isHistorical;
+
+    if (isHistorical) {
+
+        building.geometry = historicalGeometry;
+        building.material = historicalMaterial;
+
+        building.position.y = 0;
+
+    } else {
+
+        building.geometry = modernGeometry;
+        building.material = modernMaterial;
+
+        building.position.y = 1;
+
+    }
+
+}
+
+// Transformation button
+const transformButton = document.createElement('button');
+
+transformButton.id = 'transform-button';
+
+transformButton.textContent = 'View Historical Ward One';
+
+document.body.appendChild(transformButton);
+
+transformButton.addEventListener('click', () => {
+
+    transformBuilding();
+
+    if (isHistorical) {
+
+        transformButton.textContent = 'View Modern Columbia';
+
+    } else {
+
+        transformButton.textContent = 'View Historical Ward One';
+
+    }
+
+});
+
 
 //  Create the ground
 const groundGeometry = new THREE.PlaneGeometry(20, 20);
