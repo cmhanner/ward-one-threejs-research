@@ -52,14 +52,16 @@ function onWindowResize() {
 const raycaster = new THREE.Raycaster(); //  detecting intersections with 3D objects
 const mouse = new THREE.Vector2(); //  stores mouse position on screen
 
-window.addEventListener('click', onMouseClick);
+renderer.domElement.addEventListener('click', onMouseClick);
 
 function onMouseClick(event) {
     console.log("Mouse click detected");
 
     // Convert mouse coordinates from browser to threejs coordinates
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    const rect = renderer.domElement.getBoundingClientRect();
+
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
     // Create ray from camera through mouse position
     raycaster.setFromCamera(mouse, camera);
@@ -96,6 +98,7 @@ const modernMaterial = new THREE.MeshStandardMaterial({
 // //  when we call the building variable, it will be the modern Columbia building
 const building = new THREE.Mesh(modernGeometry, modernMaterial); 
 building.position.y = 1;
+//building.id = 'building'; //  assign an id to the building for css
 
 //  flag to track which building is currently displayed
 //  false = modern cola, true = historical ward one

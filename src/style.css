@@ -7,6 +7,10 @@ html, body {
 canvas {
     display: block;
 }
+
+/* #building {
+  cursor: pointer;
+} */
 #info-panel {
     display: none; /* Initially hidden until clicked */
     position: absolute;
