@@ -22,7 +22,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Create geometry and materials
 const geometry = new THREE.BoxGeometry(2, 3, 2);
-const material = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
+const material = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
 const building = new THREE.Mesh(geometry, material);
 
 //  Create the ground
@@ -34,9 +34,17 @@ const ground = new THREE.Mesh(groundGeometry, groundMaterial);
 ground.rotation.x = Math.PI / 2;
 ground.position.y = -1.5; // Position the ground below the building
 
+//Add ambient lighting (color, intensity)
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.set(-5, 5, 2); // Position the light to the left and above the building - each building is different
+
+
 //Add objects to the scene
 scene.add(building);
 scene.add(ground);
+scene.add(directionalLight);
+scene.add(ambientLight);
 
 //Animation loop
 function animate() {
