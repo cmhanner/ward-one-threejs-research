@@ -33,6 +33,32 @@ controls.maxPolarAngle = Math.PI / 2; // Prevent the camera from going below the
 controls.minDistance = 2; // Prevent the camera from getting too close to the building
 controls.maxDistance = 20; // Prevent the camera from getting too far away from the building
 
+//  Raycasting - allows us to detect where the mouse is pointing in 3D space
+const raycaster = new THREE.Raycaster(); //  detecting intersections with 3D objects
+const mouse = new THREE.Vector2(); //  stores mouse position on screen
+
+window.addEventListener('click', onMouseClick);
+
+function onMouseClick(event) {
+    console.log("Mouse click detected");
+
+    // Convert mouse coordinates from browser to threejs coordinates
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Create ray from camera through mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Check if ray intersects building
+    const intersects = raycaster.intersectObject(building);
+
+    if (intersects.length > 0) {
+        infoPanel.style.display = 'block'; // Show the info panel
+    }
+
+}
+
+
 // Create geometry and materials
 const geometry = new THREE.BoxGeometry(2, 3, 2);
 const material = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
@@ -58,6 +84,30 @@ scene.add(building);
 scene.add(ground);
 scene.add(directionalLight);
 scene.add(ambientLight);
+
+//  Historical information panel
+const infoPanel = document.createElement('div');
+
+infoPanel.id = 'info-panel';
+
+infoPanel.innerHTML = `
+    <h2>Ward One</h2>
+    <p>
+        Ward One was a predominantly Black, working-class
+        neighborhood in downtown Columbia, South Carolina.
+    </p>
+    <p>
+        Much of the neighborhood was demolished during
+        urban renewal and university expansion.
+    </p>
+    <button id="close-info">Close</button>
+`;
+
+document.body.appendChild(infoPanel);
+
+document.getElementById('close-info').addEventListener('click', () => {
+    infoPanel.style.display = 'none';
+});
 
 //Animation loop
 function animate() {

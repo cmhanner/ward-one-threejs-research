@@ -1,3 +1,22 @@
+#info-panel {
+    display: none; /* Initially hidden until clicked */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    padding: 20px;
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    z-index: 10;
+}
+
+#close-info {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
 /* :root {
   --text: #6b6375;
   --text-h: #08060d;
