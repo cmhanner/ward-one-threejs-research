@@ -33,6 +33,21 @@ controls.maxPolarAngle = Math.PI / 2; // Prevent the camera from going below the
 controls.minDistance = 2; // Prevent the camera from getting too close to the building
 controls.maxDistance = 20; // Prevent the camera from getting too far away from the building
 
+//  Window Resize listener
+window.addEventListener('resize', onWindowResize);
+function onWindowResize() {
+
+    // Update camera aspect ratio
+    camera.aspect = window.innerWidth / window.innerHeight;
+
+    // Update camera projection based off new ratio
+    camera.updateProjectionMatrix();
+
+    // Update renderer size of browser window
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+}
+
 //  Raycasting - allows us to detect where the mouse is pointing in 3D space
 const raycaster = new THREE.Raycaster(); //  detecting intersections with 3D objects
 const mouse = new THREE.Vector2(); //  stores mouse position on screen
@@ -87,26 +102,19 @@ building.position.y = 1;
 //  let allows for constant reassignment of the variable, but not redeclaration
 let isHistorical = false; 
 
-function transformBuilding() {
+function transformBuilding(historical) {
 
-    isHistorical = !isHistorical;
+    isHistorical = historical; //  option will tell which building to display
 
     if (isHistorical) {
-
         building.geometry = historicalGeometry;
         building.material = historicalMaterial;
-
         building.position.y = 0;
-
     } else {
-
         building.geometry = modernGeometry;
         building.material = modernMaterial;
-
         building.position.y = 1;
-
     }
-
 }
 
 // Transformation button
@@ -120,17 +128,45 @@ document.body.appendChild(transformButton);
 
 transformButton.addEventListener('click', () => {
 
-    transformBuilding();
+    // Switch to the opposite state
+    transformBuilding(!isHistorical);
 
-    if (isHistorical) {
+    // Update dropdown to match current state
+    yearSelector.value = isHistorical ? 'historical' : 'modern';
 
-        transformButton.textContent = 'View Modern Columbia';
+    // Update button text
+    transformButton.textContent = isHistorical
+        ? 'View Modern Columbia'
+        : 'View Historical Ward One';
 
+});
+
+// Historical year selector
+const yearSelector = document.createElement('select');
+
+yearSelector.id = 'year-selector';
+
+yearSelector.innerHTML = `
+    <option value="modern">2026 - Modern Columbia</option>
+    <option value="historical">1950 - Historical Ward One</option>
+`;
+
+document.body.appendChild(yearSelector);
+
+yearSelector.addEventListener('change', () => {
+
+    const selectedYear = yearSelector.value;
+
+    if (selectedYear === 'historical') {
+        transformBuilding(true);
     } else {
-
-        transformButton.textContent = 'View Historical Ward One';
-
+        transformBuilding(false);
     }
+
+    // Update transformation button text
+    transformButton.textContent = isHistorical
+        ? 'View Modern Columbia'
+        : 'View Historical Ward One';
 
 });
 
