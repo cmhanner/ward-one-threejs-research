@@ -1,5 +1,10 @@
 # Experiencing Ward One - Three.js Research Prototype
 
+##Video
+
+https://github.com/user-attachments/assets/64e971bc-3005-44bb-a56c-04b7521989d5
+
+## Photos
 <img width="3827" height="1922" alt="Screenshot 2026-10-10 233317" src="https://github.com/user-attachments/assets/0469dfd0-b382-4414-bb1b-5823c08baade" />
 <img width="3828" height="1916" alt="Screenshot 2026-10-10 233429" src="https://github.com/user-attachments/assets/82573f9d-d7c8-4800-ac05-b0afb0935e8b" />
 
